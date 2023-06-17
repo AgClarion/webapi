@@ -9,3 +9,4 @@ Testado no WhatsApp Business 2.23.11.78 - Androi 11</br>
 Recebimento e repostas ok, envio de mídia ok.</br> Pode repertir menu se uma resposta é invalida, ou vem depois de uma sub-opção (a corrigir)
 Agendamento de mensagens ok.</br>
 Importar contaatos do telefone ok. </br>
+Envio de campanhas ok. </br>
