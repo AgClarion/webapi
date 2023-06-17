@@ -15,3 +15,4 @@ Criar contatos de campanha direto no painel </br>
 
 Planos Futuros:
 Atualização de Material UI 4 para MUI 5
+Instruções de CallBack GerenciaNet e Webhook Facebook (Messenger e Direct).
