@@ -10,4 +10,4 @@ Recebimento e repostas ok, envio de mídia ok.</br> Pode repertir menu se uma re
 Agendamento de mensagens ok.</br>
 Importar contatos do telefone ok. </br>
 Envio de campanhas ok. </br>
-Download de Lista de Contatos em Campanhas. OK </br>
+Download e Importação de Lista de Contatos em Campanhas. OK </br>
