@@ -12,3 +12,6 @@ Importar contatos do telefone ok. </br>
 Envio de campanhas ok. </br>
 Download e Importação de Lista de Contatos em Campanhas. OK </br>
 Criar contatos de campanha direto no painel </br>
+
+Planos Futuros:
+Atualização de Materia UI 4 para MUI 5
