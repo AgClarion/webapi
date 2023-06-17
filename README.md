@@ -4,3 +4,5 @@ Funcionando com Baileys 6.2.1 </br>
 Modificado AnyWASocket, WALegacySocket, LegacyAuthenticationCreds</br>
 
 Testado no WhatsApp Business 2.23.11.78 - Androi 11
+Recebimento e repostas ok, envio de mídia ok.
+Agendamento de mensagens ok.
