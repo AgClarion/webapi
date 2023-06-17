@@ -18,7 +18,7 @@ import {
   BinaryNode,
   WAMessageStubType,
   WAMessageUpdate,
-} from "@whiskeysockets/baileys";
+  } from "@whiskeysockets/baileys";
 import Contact from "../../models/Contact";
 import Ticket from "../../models/Ticket";
 import Message from "../../models/Message";
@@ -29,7 +29,6 @@ import { logger } from "../../utils/logger";
 import CreateOrUpdateContactService from "../ContactServices/CreateOrUpdateContactService";
 import FindOrCreateTicketService from "../TicketServices/FindOrCreateTicketService";
 import ShowWhatsAppService from "../WhatsappService/ShowWhatsAppService";
-import { debounce } from "../../helpers/Debounce";
 import UpdateTicketService from "../TicketServices/UpdateTicketService";
 import formatBody from "../../helpers/Mustache";
 import { Store } from "../../libs/store";
@@ -47,19 +46,11 @@ import { Op } from "sequelize";
 import { campaignQueue, parseToMilliseconds, randomValue } from "../../queues";
 import User from "../../models/User";
 import Setting from "../../models/Setting";
-import Baileys from "../../models/Baileys";
 import { cacheLayer } from "../../libs/cache";
 import { provider } from "./providers";
-import { getWbot } from "../../libs/wbot";
-import GetDefaultWhatsApp from "../../helpers/GetDefaultWhatsApp";
-import { CreateOrUpdateBaileysChatService } from "../BaileysChatServices/CreateOrUpdateBaileysChatService";
-import { ShowBaileysChatService } from "../BaileysChatServices/ShowBaileysChatService";
-import Whatsapp from "../../models/Whatsapp";
+import { debounce } from "../../helpers/Debounce";
 
-const puppeteer = require('puppeteer');
 const fs = require('fs')
-const path = require('path');
-var axios = require('axios');
 
 type Session = WASocket & {
   id?: number;
@@ -398,7 +389,7 @@ const getMeSocket = (wbot: Session): IMe => {
   return {
     id: jidNormalizedUser((wbot as WASocket).user.id),
     name: (wbot as WASocket).user.name
-  };
+    };
 };
 
 const getSenderMessage = (
@@ -414,7 +405,6 @@ const getSenderMessage = (
 };
 
 const getContactMessage = async (msg: proto.IWebMessageInfo, wbot: Session) => {
-
   const isGroup = msg.key.remoteJid.includes("g.us");
   const rawNumber = msg.key.remoteJid.replace(/\D/g, "");
   return isGroup
@@ -753,7 +743,7 @@ const verifyQueue = async (
   const { queues, greetingMessage } = await ShowWhatsAppService(
     wbot.id!,
     ticket.companyId
-  );
+  )
 
 
 
@@ -970,8 +960,8 @@ export const handleRating = async (
     if (rate < 1) {
       finalRate = 1;
     }
-    if (rate > 3) {
-      finalRate = 3;
+    if (rate > 5) {
+      finalRate = 5;
     }
 
     await UserRating.create({
@@ -1374,12 +1364,11 @@ const handleMessage = async (
     }
 
     const whatsapp = await ShowWhatsAppService(wbot.id!, companyId);
-    const countMessageUnread = await getChat(whatsapp, msg);
-    const unreadMessages = msg.key.fromMe ? 0 : countMessageUnread;
     const contact = await verifyContact(msgContact, wbot, companyId);
 
- /*   let unreadMessages = 0;
- 
+    let unreadMessages = 0;
+
+
     if (msg.key.fromMe) {
       await cacheLayer.set(`contacts:${contact.id}:unreads`, "0");
     } else {
@@ -1858,19 +1847,8 @@ const wbotMessageListener = async (wbot: Session, companyId: number): Promise<vo
       });
     });
 
-    wbot.ev.on("messages.update", (messageUpdate: WAMessageUpdate[]) => {
-      if (messageUpdate.length === 0) return;
-      messageUpdate.forEach(async (message: WAMessageUpdate) => {
-        handleMsgAck(message, message.update.status);
-      });
-    });
-
-    wbot.ev.on("chats.update", async (chatUpdate: Partial<Chat>[]) => {
-      if (chatUpdate.length === 0) return;
-
-      chatUpdate.forEach(async (chat: Partial<Chat>) => {
-        await CreateOrUpdateBaileysChatService(wbot.id, chat);
-      });
+    wbot.ev.on("messages.set", async (messageSet: IMessage) => {
+      messageSet.messages.filter(filterMessages).map(msg => msg);
     });
   } catch (error) {
     Sentry.captureException(error);
