@@ -46,6 +46,7 @@ import { Op } from "sequelize";
 import { campaignQueue, parseToMilliseconds, randomValue } from "../../queues";
 import User from "../../models/User";
 import Setting from "../../models/Setting";
+import { CreateOrUpdateBaileysChatService } from "../BaileysChatServices/CreateOrUpdateBaileysChatService"
 import { cacheLayer } from "../../libs/cache";
 import { provider } from "./providers";
 import { debounce } from "../../helpers/Debounce";
@@ -1355,7 +1356,7 @@ const handleMessage = async (
     if (msgIsGroupBlock?.value === "enabled" && isGroup) return;
 
     if (isGroup) {
-      const grupoMeta = await wbot.groupMetadata(msg.key.remoteJid, false);
+      const grupoMeta = await wbot.groupMetadata(msg.key.remoteJid);
       const msgGroupContact = {
         id: grupoMeta.id,
         name: grupoMeta.subject
@@ -1817,43 +1818,54 @@ const filterMessages = (msg: WAMessage): boolean => {
 };
 
 const wbotMessageListener = async (wbot: Session, companyId: number): Promise<void> => {
-  try {
-    wbot.ev.on("messages.upsert", async (messageUpsert: ImessageUpsert) => {
-      const messages = messageUpsert.messages
-        .filter(filterMessages)
-        .map(msg => msg);
+    try {
+        wbot.ev.on("messages.upsert", async (messageUpsert: ImessageUpsert) => {
+            const messages = messageUpsert.messages
+                .filter(filterMessages)
+                .map(msg => msg);
 
-      if (!messages) return;
+            if (!messages) return;
 
-      messages.forEach(async (message: proto.IWebMessageInfo) => {
-        const messageExists = await Message.count({
-          where: { id: message.key.id!, companyId }
+            messages.forEach(async (message: proto.IWebMessageInfo) => {
+                const messageExists = await Message.count({
+                    where: { id: message.key.id!, companyId }
+                });
+
+                if (!messageExists) {
+                    await handleMessage(message, wbot, companyId);
+                    await verifyRecentCampaign(message, companyId);
+                    await verifyCampaignMessageAndCloseTicket(message, companyId);
+                }
+            });
         });
 
-        if (!messageExists) {
-          await handleMessage(message, wbot, companyId);
-          await verifyRecentCampaign(message, companyId);
-          await verifyCampaignMessageAndCloseTicket(message, companyId);
-        }
-      });
-    });
+        wbot.ev.on("messages.update", (messageUpdate: WAMessageUpdate[]) => {
+            if (messageUpdate.length === 0) return;
+            messageUpdate.forEach(async (message: WAMessageUpdate) => {
+                (wbot as WASocket)!.readMessages([message.key])
 
-    wbot.ev.on("messages.update", (messageUpdate: WAMessageUpdate[]) => {
-      if (messageUpdate.length === 0) return;
-      messageUpdate.forEach(async (message: WAMessageUpdate) => {
-        (wbot as WASocket)!.readMessages([message.key])
+                handleMsgAck(message, message.update.status);
+            });
+        });
 
-        handleMsgAck(message, message.update.status);
-      });
-    });
+        wbot.ev.on("messages.update", (messageUpdate: WAMessageUpdate[]) => {
+            if (messageUpdate.length === 0) return;
+            messageUpdate.forEach(async (message: WAMessageUpdate) => {
+                handleMsgAck(message, message.update.status);
+            });
+        });
 
-    wbot.ev.on("messages.set", async (messageSet: IMessage) => {
-      messageSet.messages.filter(filterMessages).map(msg => msg);
-    });
-  } catch (error) {
-    Sentry.captureException(error);
-    logger.error(`Error handling wbot message listener. Err: ${error}`);
-  }
+        wbot.ev.on("chats.update", async (chatUpdate: Partial<Chat>[]) => {
+            if (chatUpdate.length === 0) return;
+
+            chatUpdate.forEach(async (chat: Partial<Chat>) => {
+                await CreateOrUpdateBaileysChatService(wbot.id, chat);
+            });
+        });
+    } catch (error) {
+        Sentry.captureException(error);
+        logger.error(`Error handling wbot message listener. Err: ${error}`);
+    }
 };
 
 export { wbotMessageListener, handleMessage };
