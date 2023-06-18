@@ -18,3 +18,6 @@ CallBack GerenciaNet via Insomnia. OK
 Planos Futuros:
 Atualização de Material UI 4 para MUI 5
 Instruções de  e Webhook Facebook (Messenger e Direct).
+
+Bugs:
+Chat Interno ao criar fila só aparece a nova no refresh da página.
