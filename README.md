@@ -30,3 +30,8 @@ Bugs:
 Chat Interno ao criar fila só aparece a nova no refresh da página.
 - Esperado solução com atualização do frontend
 Pode repertir o menu de sub-opção se uma resposta é invalida, ou escolher a opção e digitar a seguir
+
+Em Observação:
+Tickets de Admin são fechados automaticamente na avaliação
+Tickets de usuários recebem a nota e só fecham e enviam disparo da mensagem de saudação quando clica novamente em resolver.
+Adcionar Módulo de Tarefas
