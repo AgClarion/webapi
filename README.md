@@ -15,6 +15,11 @@ Download e Importação de Lista de Contatos em Campanhas. OK </br>
 Criar contatos de campanha direto no painel. Ok </br>
 CallBack GerenciaNet via Insomnia. OK
 
+Midia no Chat. OK</br>
+Escutar Audios OK </br>
+Localização Fixa. OK - Não funciona em tempo real, mesmo na api oficial</br>
+
+
 Planos Futuros:
 Atualização de Material UI 4 para MUI 5
 Instruções de  e Webhook Facebook (Messenger e Direct).
