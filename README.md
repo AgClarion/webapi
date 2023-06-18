@@ -21,3 +21,4 @@ Instruções de  e Webhook Facebook (Messenger e Direct).
 
 Bugs:
 Chat Interno ao criar fila só aparece a nova no refresh da página.
+- Esperado solução com atualização do frontend
