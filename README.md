@@ -11,7 +11,6 @@ Recebimento e repostas ok - salvo exceções de aparelhos com app aberto,
 </br>Recomendamos o uso do whatsapp business somente para para manter a conexão ativa, sem uso simultâneo. envitar a versão normal
 </br> Não é necessário estar com celular ativo e conectado a internet para receber mensagens.
 Envio de mídia ok.</br>
-Pode repertir menu se uma resposta é invalida, ou vier depois de uma sub-opção (a corrigir)
 Agendamento de mensagens ok.</br>
 Importar contatos do telefone ok. </br>
 Envio de campanhas ok. </br>
@@ -30,3 +29,4 @@ Instruções de  e Webhook Facebook (Messenger e Direct).
 Bugs:
 Chat Interno ao criar fila só aparece a nova no refresh da página.
 - Esperado solução com atualização do frontend
+Pode repertir o menu de sub-opção se uma resposta é invalida, ou escolher a opção e digitar a seguir
