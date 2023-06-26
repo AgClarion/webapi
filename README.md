@@ -27,9 +27,10 @@ Atualização de Material UI 4 para MUI 5
 Instruções de  e Webhook Facebook (Messenger e Direct).
 
 Bugs:
-Chat Interno ao criar fila só aparece a nova no refresh da página.
+Chat Interno ao criar fila só aparece a nova no refresh da página. (intermitente)
 - Esperado solução com atualização do frontend
 Pode repertir o menu de sub-opção se uma resposta é invalida, ou escolher a opção e digitar a seguir
+Envio para grupos em alguns servidores - avaliando que se trocar o dns do servidor resolve
 
 Em Observação:
 Tickets de Admin são fechados automaticamente na avaliação </br>
