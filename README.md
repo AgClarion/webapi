@@ -3,8 +3,8 @@ Funcionando com Baileys 6.3.0 - 17 de Junho de 2023 </br>
 </br> Atualizado referencias para a bilioteca @WhiskeySockets/Baileys</br>
 Modificado AnyWASocket, WALegacySocket, LegacyAuthenticationCreds</br>
 
-Tipo de Chatbort = Somente Texto <br>
-Usar o WhatsApp Bussines, não o WhatsApp <br>
+Tipo de Chatbot = Somente Texto <br>
+Usar preferencialemnte o WhatsApp Bussines, não o WhatsApp - Pode usar tb o WhatsApp GB Pro<br>
 
 Testado no WhatsApp Business 2.23.11.78 - Androi 11</br>
 Recebimento e repostas ok - salvo exceções de aparelhos com app aberto, 
